@@ -1,0 +1,28 @@
+<div class="row">
+
+  <div class="bs-nav-tabs nav-tabs-success">
+
+    <ul class="nav nav-tabs nav-animated-border-from-center">
+      <li *ngFor="let item of tabMenu, let i = index" class="nav-item">
+        <a class="nav-link" [ngClass]="{'active':item.active}" data-toggle="tab" data-target="#nav-tabs-{{item.target}}" (click)="switchTab(item)">{{item.title}}</a>
+      </li>
+    </ul>
+
+    <div class="tab-content">
+
+      <div *ngFor="let item of tabMenu, let i = index" role="tabpanel" class="tab-pane" [ngClass]="{'in active':item.active}" id="nav-tabs-{{item.target}}">
+
+        <div class="card bs-card">
+          <div class="card-block">
+            <h4 class="card-title m-b-20">{{item.title}}</h4>
+            <p class="card-text">Cooming soon!</p>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

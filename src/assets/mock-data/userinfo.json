@@ -1,0 +1,11 @@
+{
+  "username": "nikola",
+  "permissions": ["admin"],
+  "id": "576a76870fbbc71200257854",
+  "email": "nikola.tesla@seedtag.com",
+  "name": "Nikola",
+  "surname": "Tesla",
+  "country": "es",
+  "iat": 1474612129,
+  "exp": 1477204129
+}
