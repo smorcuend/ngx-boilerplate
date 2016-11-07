@@ -13,7 +13,7 @@ const NamedModulesPlugin = require('webpack/lib/NamedModulesPlugin');
  */
 const ENV = process.env.ENV = process.env.NODE_ENV = 'development';
 const HOST = process.env.HOST || '0.0.0.0';
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8989;
 const HMR = helpers.hasProcessFlag('hot');
 const METADATA = webpackMerge(commonConfig({env: ENV}).metadata, {
   fooApi: '//foo.api.seedtag.local/api',
