@@ -1,6 +1,7 @@
 # Logs
 logs
 *.log
+*.lock
 .gitkeep
 
 # Runtime data
