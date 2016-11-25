@@ -7,19 +7,17 @@
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
     "sourceMap": true,
-    "noEmitHelpers": true,
     "strictNullChecks": false,
     "baseUrl": "./src",
     "paths": {},
     "lib": [
       "dom",
-      "es6"
+      "es2016"
     ],
     "types": [
       "hammerjs",
       "jasmine",
       "node",
-      "protractor",
       "selenium-webdriver",
       "source-map",
       "uglify-js",
