@@ -5,45 +5,34 @@ const commonConfig = require('./webpack.common.js'); // the settings that are co
 /**
  * Webpack Plugins
  */
-const ProvidePlugin = require('webpack/lib/ProvidePlugin');
-const DefinePlugin = require('webpack/lib/DefinePlugin');
-const NormalModuleReplacementPlugin = require('webpack/lib/NormalModuleReplacementPlugin');
-const IgnorePlugin = require('webpack/lib/IgnorePlugin');
-const DedupePlugin = require('webpack/lib/optimize/DedupePlugin');
-const UglifyJsPlugin = require('webpack/lib/optimize/UglifyJsPlugin');
-const WebpackMd5Hash = require('webpack-md5-hash');
+ const plugins = require('./webpack.plugins');
 
 /**
  * Webpack Constants
  */
 const ENV = process.env.NODE_ENV = process.env.ENV = 'production';
 const HOST = process.env.HOST || '0.0.0.0';
-const PORT = process.env.PORT || 3000;
-const METADATA = webpackMerge(commonConfig({ env: ENV }).metadata, {
+const PORT = process.env.PORT || 8989;
+
+const METADATA = {
   fooApi: 'https://foo.api.seedtag.com/api',
   analytics: 'UA-XXXXXXXX-Y',
   host: HOST,
   port: PORT,
   ENV: ENV,
   HMR: false
-});
+};
 
+plugins.HtmlWebpackPluginInstance.options['metadata'] =
+  Object.assign(plugins.HtmlWebpackPluginInstance.options['metadata'], METADATA);
+
+/**
+ * Webpack configuration
+ *
+ * See: http://webpack.github.io/docs/configuration.html#cli
+ */
 module.exports = function(env) {
   return webpackMerge(commonConfig({ env: ENV }), {
-
-    /**
-     * Merged metadata from webpack.common.js for index.html
-     *
-     * See: (custom attribute)
-     */
-    metadata: METADATA,
-
-    /**
-     * Switch loaders to debug mode.
-     *
-     * See: http://webpack.github.io/docs/configuration.html#debug
-     */
-    debug: false,
 
     /**
      * Developer tool to enhance debugging
@@ -100,35 +89,8 @@ module.exports = function(env) {
      */
     plugins: [
 
-      /**
-       * Plugin: WebpackMd5Hash
-       * Description: Plugin to replace a standard webpack chunkhash with md5.
-       *
-       * See: https://www.npmjs.com/package/webpack-md5-hash
-       */
-      new WebpackMd5Hash(),
-
-      /**
-       * Plugin: DedupePlugin
-       * Description: Prevents the inclusion of duplicate code into your bundle
-       * and instead applies a copy of the function at runtime.
-       *
-       * See: https://webpack.github.io/docs/list-of-plugins.html#defineplugin
-       * See: https://github.com/webpack/docs/wiki/optimization#deduplication
-       */
-      // new DedupePlugin(), // see: https://github.com/angular/angular-cli/issues/1587
-
-      /**
-       * Plugin: DefinePlugin
-       * Description: Define free variables.
-       * Useful for having development builds with debug logging or adding global constants.
-       *
-       * Environment helpers
-       *
-       * See: https://webpack.github.io/docs/list-of-plugins.html#defineplugin
-       */
-      // NOTE: when adding more properties make sure you include them in custom-typings.d.ts
-      new DefinePlugin({
+      new plugins.WebpackMd5Hash(),
+      new plugins.DefinePlugin({
         'ENV': JSON.stringify(METADATA.ENV),
         'HMR': METADATA.HMR,
         'process.env': {
@@ -138,30 +100,7 @@ module.exports = function(env) {
         }
       }),
 
-      /**
-       * Plugin: UglifyJsPlugin
-       * Description: Minimize all JavaScript output of chunks.
-       * Loaders are switched into minimizing mode.
-       *
-       * See: https://webpack.github.io/docs/list-of-plugins.html#uglifyjsplugin
-       */
-      // NOTE: To debug prod builds uncomment //debug lines and comment //prod lines
-      new UglifyJsPlugin({
-        // beautify: true, //debug
-        // mangle: false, //debug
-        // dead_code: false, //debug
-        // unused: false, //debug
-        // deadCode: false, //debug
-        // compress: {
-        //   screw_ie8: true,
-        //   keep_fnames: true,
-        //   drop_debugger: false,
-        //   dead_code: false,
-        //   unused: false
-        // }, // debug
-        // comments: true, //debug
-
-
+      new plugins.UglifyJsPlugin({
         beautify: false, //prod
         mangle: {
           screw_ie8: true,
@@ -173,72 +112,56 @@ module.exports = function(env) {
         comments: false //prod
       }),
 
-      /**
-       * Plugin: NormalModuleReplacementPlugin
-       * Description: Replace resources that matches resourceRegExp with newResource
-       *
-       * See: http://webpack.github.io/docs/list-of-plugins.html#normalmodulereplacementplugin
-       */
-
-      new NormalModuleReplacementPlugin(
+      new plugins.NormalModuleReplacementPlugin(
         /angular2-hmr/,
         helpers.root('config/modules/angular2-hmr-prod.js')
       ),
 
-      /**
-       * Plugin: IgnorePlugin
-       * Description: Don’t generate modules for requests matching the provided RegExp.
-       *
-       * See: http://webpack.github.io/docs/list-of-plugins.html#ignoreplugin
-       */
+      // new plugins.ExtractTextPlugin({ filename: helpers.root('src/assets/styles/main.scss'), allChunks: true }),
 
-      // new IgnorePlugin(/angular2-hmr/),
+      new plugins.LoaderOptionsPlugin({
+        minimize: true,
+        debug: false,
+        options: {
+          tslint: {
+            emitErrors: false,
+            failOnHint: false,
+            failOnWarning: false,
+            resourcePath: 'src'
+          },
+          sassLoader: {
+            includePaths: [
+              helpers.root('node_modules/bootstrap'),
+              helpers.root('src/assets/styles')
+            ]
+          },
+          context: '/',
+          output: {
+            path: helpers.root('dist')
+          },
 
-      /**
-       * Plugin: CompressionPlugin
-       * Description: Prepares compressed versions of assets to serve
-       * them with Content-Encoding
-       *
-       * See: https://github.com/webpack/compression-webpack-plugin
-       */
-      //  install compression-webpack-plugin
-      // new CompressionPlugin({
-      //   regExp: /\.css$|\.html$|\.js$|\.map$/,
-      //   threshold: 2 * 1024
-      // })
+          /**
+           * Html loader advanced options
+           *
+           * See: https://github.com/webpack/html-loader#advanced-options
+           */
+          // TODO: Need to workaround Angular 2's html syntax => #id [bind] (event) *ngFor
+          htmlLoader: {
+            minimize: true,
+            removeAttributeQuotes: false,
+            caseSensitive: true,
+            customAttrSurround: [
+              [/#/, /(?:)/],
+              [/\*/, /(?:)/],
+              [/\[?\(?/, /(?:)/]
+            ],
+            customAttrAssign: [/\)?\]?=/]
+          },
+
+        }
+      }),
 
     ],
-
-    /**
-     * Static analysis linter for TypeScript advanced options configuration
-     * Description: An extensible linter for the TypeScript language.
-     *
-     * See: https://github.com/wbuchwalter/tslint-loader
-     */
-    tslint: {
-      emitErrors: true,
-      failOnHint: true,
-      failOnWarning: false,
-      resourcePath: 'src'
-    },
-
-    /**
-     * Html loader advanced options
-     *
-     * See: https://github.com/webpack/html-loader#advanced-options
-     */
-    // TODO: Need to workaround Angular 2's html syntax => #id [bind] (event) *ngFor
-    htmlLoader: {
-      minimize: true,
-      removeAttributeQuotes: false,
-      caseSensitive: true,
-      customAttrSurround: [
-        [/#/, /(?:)/],
-        [/\*/, /(?:)/],
-        [/\[?\(?/, /(?:)/]
-      ],
-      customAttrAssign: [/\)?\]?=/]
-    },
 
     devServer: {
       port: METADATA.port,
@@ -248,7 +171,6 @@ module.exports = function(env) {
         aggregateTimeout: 300,
         poll: 1000
       },
-      outputPath: helpers.root('dist'),
       stats: 'errors-only'
     },
 

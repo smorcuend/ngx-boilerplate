@@ -1,12 +1,12 @@
-const helpers = require('./helpers');
 const webpackMerge = require('webpack-merge'); // used to merge webpack configs
+
+const helpers = require('./helpers');
 const commonConfig = require('./webpack.common.js'); // the settings that are common to prod and dev
 
 /**
  * Webpack Plugins
  */
-const DefinePlugin = require('webpack/lib/DefinePlugin');
-const NamedModulesPlugin = require('webpack/lib/NamedModulesPlugin');
+const plugins = require('./webpack.plugins');
 
 /**
  * Webpack Constants
@@ -15,14 +15,18 @@ const ENV = process.env.ENV = process.env.NODE_ENV = 'development';
 const HOST = process.env.HOST || '0.0.0.0';
 const PORT = process.env.PORT || 8989;
 const HMR = helpers.hasProcessFlag('hot');
-const METADATA = webpackMerge(commonConfig({env: ENV}).metadata, {
+
+const METADATA = {
   fooApi: '//foo.api.seedtag.local/api',
   analytics: 'UA-XXXXXXXX-X',
   host: HOST,
   port: PORT,
   ENV: ENV,
   HMR: HMR
-});
+};
+
+plugins.HtmlWebpackPluginInstance.options['metadata'] =
+  Object.assign(plugins.HtmlWebpackPluginInstance.options['metadata'], METADATA);
 
 /**
  * Webpack configuration
@@ -33,26 +37,12 @@ module.exports = function(options) {
   return webpackMerge(commonConfig({env: ENV}), {
 
     /**
-     * Merged metadata from webpack.common.js for index.html
-     *
-     * See: (custom attribute)
-     */
-    metadata: METADATA,
-
-    /**
-     * Switch loaders to debug mode.
-     *
-     * See: http://webpack.github.io/docs/configuration.html#debug
-     */
-    debug: true,
-
-    /**
      * Developer tool to enhance debugging
      *
      * See: http://webpack.github.io/docs/configuration.html#devtool
      * See: https://github.com/webpack/docs/wiki/build-performance#sourcemaps
      */
-    devtool: 'cheap-module-source-map',
+    devtool: 'eval',
 
     /**
      * Options affecting the output of the compilation.
@@ -107,7 +97,7 @@ module.exports = function(options) {
        * See: https://webpack.github.io/docs/list-of-plugins.html#defineplugin
        */
       // NOTE: when adding more properties, make sure you include them in custom-typings.d.ts
-      new DefinePlugin({
+      new plugins.DefinePlugin({
         'ENV': JSON.stringify(METADATA.ENV),
         'HMR': METADATA.HMR,
         'process.env': {
@@ -123,22 +113,38 @@ module.exports = function(options) {
        *
        * See: https://github.com/webpack/webpack/commit/a04ffb928365b19feb75087c63f13cadfc08e1eb
        */
-      new NamedModulesPlugin(),
+      new plugins.NamedModulesPlugin(),
+
+      new plugins.LoaderOptionsPlugin({
+        debug: true,
+        options: {
+          sassLoader: {
+            includePaths: [
+              helpers.root('node_modules/bootstrap'),
+              helpers.root('src/assets/styles')
+            ]
+          },
+          context: helpers.root(),
+          output: {
+            path: helpers.root('dist')
+          },
+          /**
+           * Static analysis linter for TypeScript advanced options configuration
+           * Description: An extensible linter for the TypeScript language.
+           *
+           * See: https://github.com/wbuchwalter/tslint-loader
+           */
+          tslint: {
+            emitErrors: false,
+            failOnHint: false,
+            failOnWarning: false,
+            resourcePath: 'src',
+            formattersDirectory: 'node_modules/tslint-loader/formatters/'
+          }
+        }
+      }),
 
     ],
-
-    /**
-     * Static analysis linter for TypeScript advanced options configuration
-     * Description: An extensible linter for the TypeScript language.
-     *
-     * See: https://github.com/wbuchwalter/tslint-loader
-     */
-    tslint: {
-      emitErrors: false,
-      failOnHint: false,
-      failOnWarning: false,
-      resourcePath: 'src'
-    },
 
     /**
      * Webpack Development Server configuration
@@ -155,8 +161,7 @@ module.exports = function(options) {
       watchOptions: {
         aggregateTimeout: 300,
         poll: 1000
-      },
-      outputPath: helpers.root('dist')
+      }
     },
 
     /*
