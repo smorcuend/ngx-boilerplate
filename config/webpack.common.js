@@ -117,7 +117,6 @@ module.exports = function(options) {
       plugins.CopyWebpackPluginInstance,
       plugins.CommonsChunkPluginInstance,
       plugins.HtmlWebpackPluginInstance,
-      plugins.ForkCheckerPluginInstance,
       plugins.HtmlElementsPluginInstance,
       plugins.AssetsPluginInstance,
       plugins.ProvidePluginInstance,

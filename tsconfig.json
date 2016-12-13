@@ -6,7 +6,8 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
-    "sourceMap": true,
+    "declaration": false,
+    "sourceMap": false,
     "strictNullChecks": false,
     "baseUrl": "./src",
     "paths": {},
@@ -28,10 +29,7 @@
     "node_modules",
     "dist"
   ],
-  "awesomeTypescriptLoaderOptions": {
-    "forkChecker": true,
-    "useWebpackText": true
-  },
+  "awesomeTypescriptLoaderOptions": {},
   "compileOnSave": false,
   "buildOnSave": false,
   "atom": {

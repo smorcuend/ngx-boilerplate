@@ -9,7 +9,6 @@ const helpers = require('./helpers');
  */
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ForkCheckerPlugin = require('awesome-typescript-loader').ForkCheckerPlugin;
 const HtmlElementsPlugin = require('./html-elements-plugin');
 const AssetsPlugin = require('assets-webpack-plugin');
 
@@ -57,14 +56,6 @@ const WebpackMd5Hash = require('webpack-md5-hash');
 /* Webpack Plugins Instances */
 
 const AssetsPluginInstance = new AssetsPlugin({path: helpers.root('dist'), filename: 'webpack-assets.json', prettyPrint: true});
-
-/*
- * Plugin: ForkCheckerPlugin
- * Description: Do type checking in a separate process, so webpack don't need to wait.
- *
- * See: https://github.com/s-panferov/awesome-typescript-loader#forkchecker-boolean-defaultfalse
- */
-const ForkCheckerPluginInstance = new ForkCheckerPlugin();
 
 /*
  * Plugin: CommonsChunkPlugin
@@ -157,7 +148,6 @@ module.exports = {
   CopyWebpackPluginInstance: CopyWebpackPluginInstance,
   CommonsChunkPluginInstance: CommonsChunkPluginInstance,
   HtmlWebpackPluginInstance: HtmlWebpackPluginInstance,
-  ForkCheckerPluginInstance: ForkCheckerPluginInstance,
   HtmlElementsPluginInstance: HtmlElementsPluginInstance,
   AssetsPluginInstance: AssetsPluginInstance,
   ProvidePluginInstance: ProvidePluginInstance,
