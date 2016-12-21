@@ -27,6 +27,8 @@ export class App implements OnInit {
     user: {}
   };
 
+  preloading = true;
+
   constructor(
     private appState: AppState,
     private userInfoService: UserInfoService
@@ -38,6 +40,10 @@ export class App implements OnInit {
     this.userInfoService.get().subscribe(data => {
       this.appData.user = data;
     });
+
+    setTimeout(() => {
+      this.preloading = false;
+    }, 5000);
 
   }
 

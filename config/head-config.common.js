@@ -33,7 +33,7 @@ module.exports = {
     {
       rel: "stylesheet",
       type: "text/css",
-      href: "/assets/spinner/spinner.css"
+      href: "assets/styles/base.css"
     }
   ],
   meta: [

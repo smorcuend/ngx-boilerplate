@@ -26,7 +26,7 @@ import 'jquery';
 require('bootstrap-loader');
 
 /* Main styles */
-require('./assets/styles/main.scss');
+// require('./assets/styles/main.scss');
 
 if ('production' === ENV) {
   // Production

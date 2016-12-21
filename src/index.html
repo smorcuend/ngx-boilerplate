@@ -16,15 +16,18 @@
 
   <body>
 
-    <app>
-      <div id="loader">
-        <div class="loader-inner ball-pulse">
-          <div></div>
-          <div></div>
-          <div></div>
-        </div>
-      </div>
-    </app>
+    <app></app>
+
+    <div id="preloader">
+      <div></div>
+    </div>
+
+    <!-- Endpoint URLs -->
+    <script>
+        window._gaId = '<%= htmlWebpackPlugin.options.metadata.analytics %>';
+        window.fooApi = '<%= htmlWebpackPlugin.options.metadata.tmsApi %>';
+        window.loginUrl = '<%= htmlWebpackPlugin.options.metadata.loginUrl %>';
+    </script>
 
     <!-- Google Analytics -->
     <script>
@@ -32,9 +35,6 @@
       (A[g].q=A[g].q||[]).push(arguments)});A[g].l=+new Date;a=n.createElement(u);
       r=n.getElementsByTagName(u)[0];a.src=l;r.parentNode.insertBefore(a,r)}
       (window,document,'ga','script','//www.google-analytics.com/analytics.js');
-      window['_gaId'] = '<%= htmlWebpackPlugin.options.metadata.analytics %>';
-      window.fooApi = '<%= htmlWebpackPlugin.options.metadata.tmsApi %>';
-      window.loginUrl = '<%= htmlWebpackPlugin.options.metadata.loginUrl %>';
     </script>
 
     <% if (htmlWebpackPlugin.options.metadata.isDevServer && htmlWebpackPlugin.options.metadata.HMR !== true) { %>
