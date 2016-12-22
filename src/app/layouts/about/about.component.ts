@@ -10,18 +10,11 @@ console.log('`About` component loaded asynchronously');
 
 @Component({
   selector: 'about',
-  styles: [`
-  `],
   template: `
     <h1>About</h1>
     <div>
       For hot module reloading run
       <pre>npm run start:hmr</pre>
-    </div>
-    <div>
-      <h3>
-        patrick@AngularClass.com
-      </h3>
     </div>
     <pre>this.localState = {{ localState | json }}</pre>
   `
@@ -53,7 +46,7 @@ export class AboutComponent {
     // remember that 'es6-promise-loader' is a promise
     setTimeout(() => {
 
-      System.import('../../assets/mock-data/mock-data.json')
+      System.import('../../../assets/mock-data/mock-data.json')
         .then(json => {
           console.log('async mockData', json);
           this.localState = json;

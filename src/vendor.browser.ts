@@ -21,12 +21,8 @@ import 'rxjs/add/operator/mergeMap';
 
 import 'jquery';
 
-/* Boostrap 4 */
-// https://github.com/shakacode/bootstrap-loader/issues/4
+/* Boostrap 4 loader */
 require('bootstrap-loader');
-
-/* Main styles */
-// require('./assets/styles/main.scss');
 
 if ('production' === ENV) {
   // Production

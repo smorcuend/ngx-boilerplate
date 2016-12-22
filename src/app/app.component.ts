@@ -42,6 +42,7 @@ export class App implements OnInit {
     });
 
     setTimeout(() => {
+      console.log(this.preloading);
       this.preloading = false;
     }, 5000);
 

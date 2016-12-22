@@ -23,16 +23,6 @@ module.exports = {
     {
       rel: "stylesheet",
       type: "text/css",
-      href: "//cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css"
-    },
-    {
-      rel: "stylesheet",
-      type: "text/css",
-      href: "//fonts.googleapis.com/css?family=Open+Sans"
-    },
-    {
-      rel: "stylesheet",
-      type: "text/css",
       href: "assets/styles/base.css"
     }
   ],
