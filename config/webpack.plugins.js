@@ -11,7 +11,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HtmlElementsPlugin = require('./html-elements-plugin');
 const AssetsPlugin = require('assets-webpack-plugin');
-
+const CommonsChunkPlugin = require("webpack/lib/optimize/CommonsChunkPlugin");
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 /**
@@ -57,17 +57,6 @@ const WebpackMd5Hash = require('webpack-md5-hash');
 
 const AssetsPluginInstance = new AssetsPlugin({path: helpers.root('dist'), filename: 'webpack-assets.json', prettyPrint: true});
 
-/*
- * Plugin: CommonsChunkPlugin
- * Description: Shares common code between the pages.
- * It identifies common modules and put them into a commons chunk.
- *
- * See: https://webpack.github.io/docs/list-of-plugins.html#commonschunkplugin
- * See: https://github.com/webpack/docs/wiki/optimization#multi-page-app
- */
-const CommonsChunkPluginInstance = new webpack.optimize.CommonsChunkPlugin({
-  name: ['polyfills', 'vendor'].reverse()
-});
 
 /*
  * Plugin: CopyWebpackPlugin
@@ -146,7 +135,6 @@ const ContextReplacementPluginInstance = new webpack.ContextReplacementPlugin(/a
 
 module.exports = {
   CopyWebpackPluginInstance: CopyWebpackPluginInstance,
-  CommonsChunkPluginInstance: CommonsChunkPluginInstance,
   HtmlWebpackPluginInstance: HtmlWebpackPluginInstance,
   HtmlElementsPluginInstance: HtmlElementsPluginInstance,
   AssetsPluginInstance: AssetsPluginInstance,
@@ -154,6 +142,7 @@ module.exports = {
   ContextReplacementPluginInstance: ContextReplacementPluginInstance,
   LoaderOptionsPlugin: LoaderOptionsPlugin,
 
+  CommonsChunkPlugin: CommonsChunkPlugin,
   DefinePlugin: DefinePlugin,
   NamedModulesPlugin: NamedModulesPlugin,
   NormalModuleReplacementPlugin: NormalModuleReplacementPlugin,

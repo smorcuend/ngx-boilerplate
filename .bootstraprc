@@ -32,14 +32,14 @@ extractStyles: false
 # Thus, derived Bootstrap variables can depend on values from here.
 # See the Bootstrap _variables.scss file for examples of derived Bootstrap variables.
 #
-#preBootstrapCustomizations: ./src/assets/styles/_variables.scss
+preBootstrapCustomizations: ./src/assets/styles/bootstrap/_variables.scss
 
 
 # This gets loaded after bootstrap/variables is loaded
 # Thus, you may customize Bootstrap variables
 # based on the values established in the Bootstrap _variables.scss file
 #
-bootstrapCustomizations: ./assets/styles/bootstrap/customizations.scss
+bootstrapCustomizations: ./src/assets/styles/bootstrap/customizations.scss
 
 
 # Import your custom styles here
@@ -89,7 +89,7 @@ styles:
   tags: true
 
   # Components w/ JavaScript
-  modal: true
+  # modal: true
   # tooltip: true
   # popover: true
   # carousel: true

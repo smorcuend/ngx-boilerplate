@@ -55,17 +55,6 @@ const SourceMapLoader = () => {
   }
 }
 
-/*
- * Json loader support for *.json files.
- *
- * See: https://github.com/webpack/json-loader
- */
-const JsonLoader = () => {
-  return {
-    test: /\.json$/,
-    loader: 'json-loader'
-  }
-};
 
 /*
  * to string and css loader support for *.css files
@@ -166,7 +155,6 @@ module.exports = {
   TsLintLoader: TsLintLoader,
   SourceMapLoader: SourceMapLoader,
   // JavascriptLoader: JavascriptLoader,
-  JsonLoader: JsonLoader,
   CssLoader: CssLoader,
   SassLoader: SassLoader,
   BootstrapLoader: BootstrapLoader,

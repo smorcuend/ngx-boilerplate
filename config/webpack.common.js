@@ -92,7 +92,6 @@ module.exports = function(options) {
 
         // loaders.TsLintLoader(),
         loaders.TsLoader(isProd),
-        loaders.JsonLoader(),
         loaders.CssLoader(),
         loaders.SassLoader(),
         loaders.BootstrapLoader(),
@@ -114,8 +113,12 @@ module.exports = function(options) {
      */
     plugins: [
 
+      // Common chunks creation
+      new plugins.CommonsChunkPlugin({
+        name: ['polyfills', 'vendor'].reverse()
+      }),
+
       plugins.CopyWebpackPluginInstance,
-      plugins.CommonsChunkPluginInstance,
       plugins.HtmlWebpackPluginInstance,
       plugins.HtmlElementsPluginInstance,
       plugins.AssetsPluginInstance,
