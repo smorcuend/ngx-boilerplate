@@ -3,23 +3,21 @@
 Inspired and based on [Angular2-webpack-starter](https://github.com/AngularClass/angular2-webpack-starter) & [Angular2-webpack](https://github.com/preboot/angular2-webpack) projects.
 
 ## Keywords
-* Angular2@2.0.0
-* Webpack@2.1.0-beta
-* typescript@2.0.0
-* bootstrap@4.0.0-alpha
-* Sass & PostCss
-* jQuery@3.1.0
+* angular ^2.4.x
+* webpack ^2.2.0-rc
+* typescript ^2.1.x
+* bootstrap ^4.0.0-alpha
+* Sass & Postcss
+* jQuery ^3.1.x
 
 ## Getting Started
 
-This project is ready to deploy on infrastructures based on Docker.
-
 ### Installing
 ```
-docker-compose build
+yarn install
 ```
 
 ### Run
 ```
-docker-compose up
+yarn start
 ```

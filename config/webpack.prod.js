@@ -5,7 +5,7 @@ const commonConfig = require('./webpack.common.js'); // the settings that are co
 /**
  * Webpack Plugins
  */
- const plugins = require('./webpack.plugins');
+const plugins = require('./webpack.plugins');
 
 /**
  * Webpack Constants
