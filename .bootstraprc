@@ -12,7 +12,7 @@ useFlexbox: false
 styleLoaders:
   - style-loader
   - css-loader?sourceMap
-  - postcss-loader?sourceMap
+  #- postcss-loader?sourceMap
   - sass-loader?sourceMap
 
 # Extract styles to stand-alone css file
@@ -56,7 +56,7 @@ styles:
 
   # Reset and dependencies
   normalize: true
-  # print: true
+  print: true
 
   # Core CSS
   reboot: true
@@ -69,7 +69,7 @@ styles:
   buttons: true
 
   # Components
-  animation: true
+  # animation: true
   dropdown: true
   button-group: true
   input-group: true
@@ -79,34 +79,34 @@ styles:
   card: true
   breadcrumb: true
   pagination: true
-  # jumbotron: true
-  # alert: true
-  # progress: true
-  # media: true
+  jumbotron: true
+  alert: true
+  progress: true
+  media: true
   list-group: true
   responsive-embed: true
   close: true
-  tags: true
+  #tags: true
 
   # Components w/ JavaScript
-  # modal: true
-  # tooltip: true
-  # popover: true
-  # carousel: true
+  modal: true
+  tooltip: true
+  popover: true
+  carousel: true
 
   # Utility classes
   utilities: true
 
 ### Bootstrap scripts
 scripts:
-  # alert: true
+  alert: true
   button: true
-  # carousel: true
+  carousel: true
   collapse: true
   dropdown: true
   modal: true
-  # popover: true
-  # scrollspy: true
+  popover: true
+  scrollspy: true
   tab: true
-  # tooltip: true
+  tooltip: true
   util: true

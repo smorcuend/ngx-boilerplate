@@ -90,7 +90,7 @@ module.exports = function(options) {
 
         loaders.SourceMapLoader(),
 
-        // loaders.TsLintLoader(),
+        loaders.TsLintLoader(),
         loaders.TsLoader(isProd),
         loaders.CssLoader(),
         loaders.SassLoader(),

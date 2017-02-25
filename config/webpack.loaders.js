@@ -1,19 +1,6 @@
 const helpers = require('./helpers');
 
-
 /* Pre-Loaders */
-
-// {
-//   enforce:'pre',
-//   test: /\.ts$/,
-//   loader: 'string-replace-loader',
-//   query: {
-//     search: '(System|SystemJS)(.*[\\n\\r]\\s*\\.|\\.)import\\((.+)\\)',
-//     replace: '$1.import($3).then(mod => (mod.__esModule && mod.default) ? mod.default : mod)',
-//     flags: 'g'
-//   },
-//   include: [helpers.root('src')]
-// },
 
 const TsLintLoader = () => {
   return {
@@ -22,8 +9,6 @@ const TsLintLoader = () => {
     loaders: 'tslint-loader'
   }
 };
-
-
 
 /* Loaders */
 
@@ -139,16 +124,7 @@ const EotLoader = () => {
 };
 
 /* Post-Loaders */
-// {
-//   enforce:'post',
-//   test: /\.js$/,
-//   loader: 'string-replace-loader',
-//   query: {
-//     search: 'var sourceMappingUrl = extractSourceMappingUrl\\(cssText\\);',
-//     replace: 'var sourceMappingUrl = "";',
-//     flags: 'g'
-//   }
-// }
+
 
 module.exports = {
   TsLoader: TsLoader,
