@@ -23,5 +23,3 @@ export function main(): Promise<any> {
 // needed for hmr
 // in prod this is replace for document ready
 bootloader(main);
-
-require('./assets/styles/theme.scss');

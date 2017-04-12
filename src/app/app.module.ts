@@ -1,9 +1,12 @@
 import { NgModule, ApplicationRef } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule, Title }  from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
 import { HttpModule, Http, BrowserXhr, XHRBackend, RequestOptions } from '@angular/http';
 import { RouterModule, Router } from '@angular/router';
 import { removeNgStyles, createNewHosts, createInputTransfer } from '@angularclass/hmr';
+
+import { CovalentCoreModule } from '@covalent/core';
 
 /*
  * Platform and Environment providers/pipes
@@ -62,6 +65,8 @@ type StoreType = {
   ],
   imports: [ // import Angular's modules
     BrowserModule,
+    BrowserAnimationsModule,
+    CovalentCoreModule,
     FormsModule,
     HttpModule,
     ROUTES,

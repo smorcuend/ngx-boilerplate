@@ -95,8 +95,35 @@ module.exports = function(options) {
 
         loaders.TsLintLoader(),
         loaders.TsLoader(isProd),
-        loaders.CssLoader(),
-        loaders.SassLoader(),
+
+        //loaders.CssLoader(),
+        // loaders.SassLoader(),
+        {
+          test: /\.css$/,
+          exclude: helpers.root('src', 'app'),
+          loaders: plugins.ExtractTextPlugin.extract({ fallbackLoader: 'style-loader', loader: 'css-loader?sourceMap' })
+        },
+        {
+          test: /\.scss$/,
+          exclude: helpers.root('src', 'app'),
+          loaders: [
+            'style-loader',
+            'css-loader',
+            'sass-loader'
+          ]
+        },
+
+        {
+          test: /\.scss$/,
+          include: helpers.root('src', 'app'),
+          loaders: ['css-to-string-loader','css-loader?sourceMap','sass-loader']
+        },
+        {
+          test: /\.css$/,
+          include: helpers.root('src', 'app'),
+          loaders: ['css-to-string-loader','css-loader']
+        },
+
         // loaders.BootstrapLoader(),
         loaders.HtmlLoader(),
         loaders.ImageLoader(),
@@ -169,7 +196,7 @@ module.exports = function(options) {
         helpers.root('node_modules/@angular/core/src/facade/math.js')
       ),
 
-      
+
       new ngcWebpack.NgcWebpackPlugin({
         disabled: !AOT,
         tsConfig: helpers.root('tsconfig.webpack.json'),

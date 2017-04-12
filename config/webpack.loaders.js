@@ -1,4 +1,5 @@
 const helpers = require('./helpers');
+const plugins = require('./webpack.plugins');
 const AOT = helpers.hasNpmFlag('aot');
 
 /* Pre-Loaders */
@@ -78,21 +79,16 @@ const SourceMapLoader = () => {
 const CssLoader = () => {
   return {
     test: /\.css$/,
-    loaders: [
-      'to-string-loader',
-      'css-loader'
-    ]
+    exclude: helpers.root('src', 'app'),
+    loaders: plugins.ExtractTextPlugin.extract({ fallbackLoader: 'style-loader', loader: 'css-loader?sourceMap' })
   }
 };
 
 const SassLoader = () => {
   return {
     test: /\.scss$/,
-    loaders: [
-      'style-loader',
-      'css-loader',
-      'sass-loader'
-    ]
+    include: helpers.root('src', 'app'),
+    loaders: ['css-to-string-loader','css-loader','sass-loader']
   }
 };
 

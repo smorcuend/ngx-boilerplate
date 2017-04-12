@@ -1,7 +1,7 @@
-/*
- * Angular 2 decorators and services
- */
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+
+import { DomSanitizer } from '@angular/platform-browser';
+import { MdIconRegistry } from '@angular/material';
 
 import { AppState } from './app.service';
 import { UserInfoService } from './services/api/userinfo';
@@ -16,9 +16,9 @@ declare const loginUrl: string;
   selector: 'app',
   encapsulation: ViewEncapsulation.None,
   // Our list of styles in our component. We may add more to compose many styles together
-  styleUrls: ['./app.style.css'],
+  styleUrls: ['./app.component.scss'],
   // Every Angular template is first compiled by the browser before Angular runs it's compiler
-  templateUrl: './app.template.html'
+  templateUrl: './app.component.html'
 })
 export class App implements OnInit {
 
@@ -31,7 +31,9 @@ export class App implements OnInit {
 
   constructor(
     private appState: AppState,
-    private userInfoService: UserInfoService
+    private userInfoService: UserInfoService,
+    private _iconRegistry: MdIconRegistry,
+    private _domSanitizer: DomSanitizer
   ) { }
 
   ngOnInit() {
