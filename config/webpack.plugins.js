@@ -13,6 +13,11 @@ const HtmlElementsPlugin = require('./html-elements-plugin');
 const AssetsPlugin = require('assets-webpack-plugin');
 const CommonsChunkPlugin = require("webpack/lib/optimize/CommonsChunkPlugin");
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const DllBundlesPlugin = require('webpack-dll-bundles-plugin').DllBundlesPlugin;
+const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin');
+const CheckerPlugin = require('awesome-typescript-loader').CheckerPlugin;
+const ContextReplacementPlugin = require('webpack/lib/ContextReplacementPlugin');
+const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 
 /**
  * Plugin: DefinePlugin
@@ -25,17 +30,18 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
  */
 const DefinePlugin = require('webpack/lib/DefinePlugin');
 const NamedModulesPlugin = require('webpack/lib/NamedModulesPlugin');
+
 /**
  * Plugin: NormalModuleReplacementPlugin
  * Description: Replace resources that matches resourceRegExp with newResource
  *
  * See: http://webpack.github.io/docs/list-of-plugins.html#normalmodulereplacementplugin
  */
-
 const NormalModuleReplacementPlugin = require('webpack/lib/NormalModuleReplacementPlugin');
 const IgnorePlugin = require('webpack/lib/IgnorePlugin');
 const DedupePlugin = require('webpack/lib/optimize/DedupePlugin');
 const LoaderOptionsPlugin = require('webpack/lib/LoaderOptionsPlugin');
+
 /**
  * Plugin: UglifyJsPlugin
  * Description: Minimize all JavaScript output of chunks.
@@ -55,7 +61,11 @@ const WebpackMd5Hash = require('webpack-md5-hash');
 
 /* Webpack Plugins Instances */
 
-const AssetsPluginInstance = new AssetsPlugin({path: helpers.root('dist'), filename: 'webpack-assets.json', prettyPrint: true});
+const AssetsPluginInstance = new AssetsPlugin({
+  path: helpers.root('dist'), 
+  filename: 'webpack-assets.json', 
+  prettyPrint: true
+});
 
 
 /*
@@ -67,10 +77,7 @@ const AssetsPluginInstance = new AssetsPlugin({path: helpers.root('dist'), filen
  * See: https://www.npmjs.com/package/copy-webpack-plugin
  */
 const CopyWebpackPluginInstance = new CopyWebpackPlugin([
-  {
-    from: 'src/assets',
-    to: 'assets'
-  }
+  { from: 'src/assets', to: 'assets' }
 ]);
 
 /*
@@ -112,26 +119,30 @@ const HtmlWebpackPluginInstance = new HtmlWebpackPlugin({
 const HtmlElementsPluginInstance = new HtmlElementsPlugin({headTags: require('./head-config.common')});
 
 const ProvidePluginInstance = new webpack.ProvidePlugin({
-  $: "jquery",
-  jQuery: "jquery",
-  "window.jQuery": "jquery",
-  Tether: "tether",
-  "window.Tether": "tether",
-  Tooltip: "exports-loader?Tooltip!bootstrap/js/dist/tooltip",
-  Alert: "exports-loader?Alert!bootstrap/js/dist/alert",
-  Button: "exports-loader?Button!bootstrap/js/dist/button",
-  Carousel: "exports-loader?Carousel!bootstrap/js/dist/carousel",
-  Collapse: "exports-loader?Collapse!bootstrap/js/dist/collapse",
-  Dropdown: "exports-loader?Dropdown!bootstrap/js/dist/dropdown",
-  Modal: "exports-loader?Modal!bootstrap/js/dist/modal",
-  Popover: "exports-loader?Popover!bootstrap/js/dist/popover",
-  Scrollspy: "exports-loader?Scrollspy!bootstrap/js/dist/scrollspy",
-  Tab: "exports-loader?Tab!bootstrap/js/dist/tab",
-  Tooltip: "exports-loader?Tooltip!bootstrap/js/dist/tooltip",
-  Util: "exports-loader?Util!bootstrap/js/dist/util"
+
 });
 
-const ContextReplacementPluginInstance = new webpack.ContextReplacementPlugin(/angular(\\|\/)core(\\|\/)(esm(\\|\/)src|src)(\\|\/)linker/, __dirname);
+const ContextReplacementPluginInstance = new ContextReplacementPlugin(
+  // The (\\|\/) piece accounts for path separators in *nix and Windows
+  /angular(\\|\/)core(\\|\/)src(\\|\/)linker/,
+  helpers.root('src'), // location of your src
+  {
+    // your Angular Async Route paths relative to this root directory
+  }
+);
+
+
+/*
+  * Plugin: ScriptExtHtmlWebpackPlugin
+  * Description: Enhances html-webpack-plugin functionality
+  * with different deployment options for your scripts including:
+  *
+  * See: https://github.com/numical/script-ext-html-webpack-plugin
+  */
+new ScriptExtHtmlWebpackPlugin({
+  defaultAttribute: 'defer'
+});
+
 
 module.exports = {
   CopyWebpackPluginInstance: CopyWebpackPluginInstance,
@@ -150,5 +161,8 @@ module.exports = {
   DedupePlugin: DedupePlugin,
   UglifyJsPlugin: UglifyJsPlugin,
   WebpackMd5Hash: WebpackMd5Hash,
-  ExtractTextPlugin: ExtractTextPlugin
+  ExtractTextPlugin: ExtractTextPlugin,
+  DllBundlesPlugin: DllBundlesPlugin,
+  AddAssetHtmlPlugin: AddAssetHtmlPlugin,
+  CheckerPlugin: CheckerPlugin
 };

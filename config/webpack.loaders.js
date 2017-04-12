@@ -1,4 +1,5 @@
 const helpers = require('./helpers');
+const AOT = helpers.hasNpmFlag('aot');
 
 /* Pre-Loaders */
 
@@ -22,14 +23,42 @@ const TsLintLoader = () => {
 const TsLoader = (isProd) => {
   return {
     test: /\.ts$/,
-    loaders: [
-      '@angularclass/hmr-loader?pretty=' + !isProd + '&prod=' + isProd,
-      'awesome-typescript-loader',
-      'angular2-template-loader'
+    use: [
+      {
+        loader: '@angularclass/hmr-loader',
+        options: {
+          pretty: !isProd,
+          prod: isProd
+        }
+      },
+      { // MAKE SURE TO CHAIN VANILLA JS CODE, I.E. TS COMPILATION OUTPUT.
+        loader: 'ng-router-loader',
+        options: {
+          loader: 'async-import',
+          genDir: 'compiled',
+          aot: AOT
+        }
+      },
+      {
+        loader: 'awesome-typescript-loader',
+        options: {
+          configFileName: 'tsconfig.webpack.json'
+        }
+      },
+      {
+        loader: 'angular2-template-loader'
+      }
     ],
-    exclude: [/\.(spec|e2e)\.ts$/, helpers.root('node_modules')]
+    exclude: [/\.(spec|e2e)\.ts$/]
   }
 };
+
+const JSONLoader = () => {
+  return {
+    test: /\.json$/,
+    use: 'json-loader'
+  }
+}
 
 const SourceMapLoader = () => {
  return {
@@ -129,7 +158,8 @@ const EotLoader = () => {
 module.exports = {
   TsLoader: TsLoader,
   TsLintLoader: TsLintLoader,
-  SourceMapLoader: SourceMapLoader,
+  JSONLoader: JSONLoader,
+  // SourceMapLoader: SourceMapLoader,
   // JavascriptLoader: JavascriptLoader,
   CssLoader: CssLoader,
   SassLoader: SassLoader,

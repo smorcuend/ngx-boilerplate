@@ -1,5 +1,7 @@
-const webpack = require('webpack');
 const helpers = require('./helpers');
+
+const webpack = require('webpack');
+const ngcWebpack = require('ngc-webpack');
 
 /*
  * Webpack Loaders
@@ -15,6 +17,7 @@ const plugins = require('./webpack.plugins');
  * Webpack Constants
  */
 const HMR = helpers.hasProcessFlag('hot');
+const AOT = helpers.hasNpmFlag('aot');
 const METADATA = {
   title: 'Angular2 Boilerplate by Seedtag',
   baseUrl: '/',
@@ -41,8 +44,8 @@ module.exports = function(options) {
     entry: {
 
       'polyfills': './src/polyfills.browser.ts',
-      'vendor': './src/vendor.browser.ts',
-      'main': './src/main.browser.ts'
+      'main':      AOT ? './src/main.browser.aot.ts' :
+                  './src/main.browser.ts'
 
     },
 
@@ -58,7 +61,7 @@ module.exports = function(options) {
        *
        * See: http://webpack.github.io/docs/configuration.html#resolve-extensions
        */
-      extensions: ['.ts', '.js', '.json', '.scss'],
+      extensions: ['.ts', '.js', '.json'],
 
       // An array of directory names to be resolved to the current directory
       modules: [
@@ -88,13 +91,13 @@ module.exports = function(options) {
        */
       rules: [
 
-        loaders.SourceMapLoader(),
+        // loaders.SourceMapLoader(),
 
         loaders.TsLintLoader(),
         loaders.TsLoader(isProd),
         loaders.CssLoader(),
         loaders.SassLoader(),
-        loaders.BootstrapLoader(),
+        // loaders.BootstrapLoader(),
         loaders.HtmlLoader(),
         loaders.ImageLoader(),
         loaders.SvgLoader(),
@@ -115,15 +118,63 @@ module.exports = function(options) {
 
       // Common chunks creation
       new plugins.CommonsChunkPlugin({
+        name: 'polyfills',
+        chunks: ['polyfills']
+      }),
+      // This enables tree shaking of the vendor modules
+      new plugins.CommonsChunkPlugin({
+        name: 'vendor',
+        chunks: ['main'],
+        minChunks: module => /node_modules/.test(module.resource)
+      }),
+      // Specify the correct order the scripts will be injected in
+      new plugins.CommonsChunkPlugin({
         name: ['polyfills', 'vendor'].reverse()
       }),
+
+      /*
+       * Plugin: ForkCheckerPlugin
+       * Description: Do type checking in a separate process, so webpack don't need to wait.
+       *
+       * See: https://github.com/s-panferov/awesome-typescript-loader#forkchecker-boolean-defaultfalse
+       */
+      new plugins.CheckerPlugin(),
 
       plugins.CopyWebpackPluginInstance,
       plugins.HtmlWebpackPluginInstance,
       plugins.HtmlElementsPluginInstance,
       plugins.AssetsPluginInstance,
       plugins.ProvidePluginInstance,
-      plugins.ContextReplacementPluginInstance
+      plugins.ContextReplacementPluginInstance,
+
+            // Fix Angular 2
+      new plugins.NormalModuleReplacementPlugin(
+        /facade(\\|\/)async/,
+        helpers.root('node_modules/@angular/core/src/facade/async.js')
+      ),
+      new plugins.NormalModuleReplacementPlugin(
+        /facade(\\|\/)collection/,
+        helpers.root('node_modules/@angular/core/src/facade/collection.js')
+      ),
+      new plugins.NormalModuleReplacementPlugin(
+        /facade(\\|\/)errors/,
+        helpers.root('node_modules/@angular/core/src/facade/errors.js')
+      ),
+      new plugins.NormalModuleReplacementPlugin(
+        /facade(\\|\/)lang/,
+        helpers.root('node_modules/@angular/core/src/facade/lang.js')
+      ),
+      new plugins.NormalModuleReplacementPlugin(
+        /facade(\\|\/)math/,
+        helpers.root('node_modules/@angular/core/src/facade/math.js')
+      ),
+
+      
+      new ngcWebpack.NgcWebpackPlugin({
+        disabled: !AOT,
+        tsConfig: helpers.root('tsconfig.webpack.json'),
+        resourceOverride: helpers.root('config/resource-override.js')
+      })
 
     ]
 

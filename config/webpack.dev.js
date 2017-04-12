@@ -1,6 +1,7 @@
-const webpackMerge = require('webpack-merge'); // used to merge webpack configs
-
 const helpers = require('./helpers');
+
+const webpackMerge = require('webpack-merge'); // used to merge webpack configs
+const webpackMergeDll = webpackMerge.strategy({plugins: 'replace'});
 const commonConfig = require('./webpack.common.js'); // the settings that are common to prod and dev
 
 /**
@@ -107,13 +108,60 @@ module.exports = function(options) {
         }
       }),
 
+      new plugins.DllBundlesPlugin({
+        bundles: {
+          polyfills: [
+            'core-js',
+            {
+              name: 'zone.js',
+              path: 'zone.js/dist/zone.js'
+            },
+            {
+              name: 'zone.js',
+              path: 'zone.js/dist/long-stack-trace-zone.js'
+            },
+          ],
+          vendor: [
+            '@angular/platform-browser',
+            '@angular/platform-browser-dynamic',
+            '@angular/core',
+            '@angular/common',
+            '@angular/forms',
+            '@angular/http',
+            '@angular/router',
+            '@angularclass/hmr',
+            'rxjs',
+          ]
+        },
+        dllDir: helpers.root('dll'),
+        webpackConfig: webpackMergeDll(commonConfig({env: ENV}), {
+          devtool: 'cheap-module-source-map',
+          plugins: []
+        })
+      }),
+
+
+      /**
+       * Plugin: AddAssetHtmlPlugin
+       * Description: Adds the given JS or CSS file to the files
+       * Webpack knows about, and put it into the list of assets
+       * html-webpack-plugin injects into the generated html.
+       *
+       * See: https://github.com/SimenB/add-asset-html-webpack-plugin
+       */
+      new plugins.AddAssetHtmlPlugin([
+        { filepath: helpers.root(`dll/${plugins.DllBundlesPlugin.resolveFile('polyfills')}`) },
+        { filepath: helpers.root(`dll/${plugins.DllBundlesPlugin.resolveFile('vendor')}`) }
+      ]),
+
+
       /**
        * Plugin: NamedModulesPlugin (experimental)
        * Description: Uses file names as module name.
        *
        * See: https://github.com/webpack/webpack/commit/a04ffb928365b19feb75087c63f13cadfc08e1eb
        */
-      new plugins.NamedModulesPlugin(),
+      // new plugins.NamedModulesPlugin(),
 
       new plugins.LoaderOptionsPlugin({
         debug: true,
