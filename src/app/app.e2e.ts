@@ -9,7 +9,7 @@ describe('App', () => {
 
   it('should have a title', () => {
     let subject = browser.getTitle();
-    let result = 'Angular2 Boilerplate by Seedtag';
+    let result = 'Angular Boilerplate';
     expect(subject).toEqual(result);
   });
 

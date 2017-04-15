@@ -1,7 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'mapToIterable'
+  name: 'smMapToIterable'
 })
 export class MapToIterablePipe implements PipeTransform {
   transform(dict: Object): Array<any> {

@@ -1,9 +1,9 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'humanize'
+  name: 'smHumanize'
 })
-export class HumanizePipe {
+export class HumanizePipe implements PipeTransform {
   transform(value: string) {
     if ((typeof value) !== 'string') {
       return value;

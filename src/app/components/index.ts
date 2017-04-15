@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, NgModule } from '@angular/core';
 
-import { NavbarComponent } from './navbar';
+export const COMPONENTS_ELEMENTS: Component[] = [
 
-export const COMPONENT_DECLARATIONS: Component[] = [
-  NavbarComponent
+];
+
+export const COMPONENTS_MODULES: NgModule[] = [
+
 ];

@@ -1,15 +1,20 @@
-import { Component } from '@angular/core';
+import { Component, NgModule } from '@angular/core';
+
+import { MainComponent } from './main';
 
 import { DashboardComponent } from './dashboard';
-import { FeaturesComponent } from './features';
 import { AboutComponent } from './about';
 import { NoConnectionComponent }  from './no-connection';
 import { NoContentComponent } from './no-content';
 
-export const LAYOUT_DECLARATIONS: Component[] = [
+export const LAYOUT_COMPONENTS: Component[] = [
+  MainComponent,
   DashboardComponent,
-  FeaturesComponent,
   AboutComponent,
   NoContentComponent,
   NoConnectionComponent
+];
+
+export const LAYOUT_MODULES: NgModule[] = [
+
 ];

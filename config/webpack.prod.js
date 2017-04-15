@@ -15,7 +15,7 @@ const HOST = process.env.HOST || '0.0.0.0';
 const PORT = process.env.PORT || 8989;
 
 const METADATA = {
-  fooApi: 'https://foo.api.seedtag.com/api',
+  fooApi: 'https://foo.api.mydomain.com/api',
   analytics: 'UA-XXXXXXXX-Y',
   host: HOST,
   port: PORT,
@@ -145,7 +145,7 @@ module.exports = function(env) {
            *
            * See: https://github.com/webpack/html-loader#advanced-options
            */
-          // TODO: Need to workaround Angular 2's html syntax => #id [bind] (event) *ngFor
+          // TODO: Need to workaround Angular's html syntax => #id [bind] (event) *ngFor
           htmlLoader: {
             minimize: true,
             removeAttributeQuotes: false,

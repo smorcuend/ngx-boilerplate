@@ -18,7 +18,7 @@ const PORT = process.env.PORT || 8989;
 const HMR = helpers.hasProcessFlag('hot');
 
 const METADATA = {
-  fooApi: '//foo.api.seedtag.local/api',
+  fooApi: '//foo.api.mydomain.local/api',
   analytics: 'UA-XXXXXXXX-X',
   host: HOST,
   port: PORT,

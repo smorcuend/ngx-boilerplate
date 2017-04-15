@@ -8,14 +8,14 @@ const TsLintLoader = () => {
   return {
     test: /\.ts$/,
     enforce:'pre',
-    loaders: 'tslint-loader'
+    use: 'tslint-loader'
   }
 };
 
 /* Loaders */
 
 /*
- * Typescript loader support for .ts and Angular 2 async routes via .async.ts
+ * Typescript loader support for .ts and Angular async routes via .async.ts
  * Replace templateUrl and stylesUrl with require()
  *
  * See: https://github.com/s-panferov/awesome-typescript-loader
@@ -61,43 +61,57 @@ const JSONLoader = () => {
   }
 }
 
-const SourceMapLoader = () => {
- return {
-    enforce: 'pre',
-    test: /\.js$/,
-    loader: 'source-map-loader',
-    exclude: [helpers.root('node_modules')]
-  }
-}
-
-
 /*
  * to string and css loader support for *.css files
  * Returns file content as string
  *
  */
-const CssLoader = () => {
-  return {
-    test: /\.css$/,
-    exclude: helpers.root('src', 'app'),
-    loaders: plugins.ExtractTextPlugin.extract({ fallbackLoader: 'style-loader', loader: 'css-loader?sourceMap' })
-  }
+const CssLoaders = () => {
+  return [
+    {
+      test: /\.css$/,
+      exclude: helpers.root('src', 'app'),
+      loaders: plugins.ExtractTextPlugin.extract({ fallback: 'style-loader', use: 'css-loader' })
+    },
+    {
+      test: /\.css$/,
+      include: helpers.root('src', 'app'),
+      loaders: ['css-to-string-loader','css-loader']
+    },
+  ]
 };
 
-const SassLoader = () => {
-  return {
-    test: /\.scss$/,
-    include: helpers.root('src', 'app'),
-    loaders: ['css-to-string-loader','css-loader','sass-loader']
-  }
-};
+const SassLoaders = () => {
+  return [
+    {
+      test: /\.scss$/,
+      exclude: [
+        helpers.root('node_modules'),
+        helpers.root('src', 'app')
+        ],
+      loaders: [
+        'to-string-loader',
+        'style-loader',
+        'css-loader',
+        'resolve-url-loader',
+        'sass-loader?sourceMap'
+      ]
+    },
 
-// Bootstrap 4
-const BootstrapLoader = () => {
-  return {
-    test: /bootstrap\/dist\/js\/umd\//,
-    loader: 'imports-loader?jQuery=jquery'
-  }
+    {
+      test: /\.scss$/,
+      include: helpers.root('src', 'app'),
+      exclude: helpers.root('node_modules'),
+      loaders: [
+        'css-to-string-loader',
+        //'raw-loader',
+        'style-loader',
+        'css-loader',
+        'resolve-url-loader',
+        'sass-loader?sourceMap'
+        ]
+    },
+  ]
 };
 
 /* Raw loader support for *.html
@@ -108,43 +122,26 @@ const BootstrapLoader = () => {
 const HtmlLoader = () => {
   return {
     test: /\.html$/,
-    loader: 'raw-loader',
+    use: 'raw-loader',
     exclude: [helpers.root('src/index.html')]
   }
 };
 
-/* File loader for supporting images, for example, in CSS files.
+/*
+ * File loader for supporting images, for example, in CSS files.
  */
 const ImageLoader = () => {
   return {
     test: /\.(jpg|png|gif)$/,
-    loader: 'file-loader'
+    use: 'file-loader'
   }
 };
 
-const SvgLoader = () => {
+/* File loader for supporting fonts, for example, in CSS files. */
+const FontLoader = () => {
   return {
-    test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
-    loader: 'url-loader?limit=10000&mimetype=image/svg+xml'
-  }
-};
-
-const WoffLoader = () => {
-  return {
-    test: /\.(woff|woff2)(\?v=\d+\.\d+\.\d+)?$/,
-    loader: 'url-loader?limit=10000&mimetype=application/font-woff'
-  }
-};
-const TtfLoader = () => {
-  return {
-    test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
-    loader: 'url-loader?limit=10000&mimetype=application/octet-stream'
-  }
-};
-const EotLoader = () => {
-  return {
-    test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
-    loader: 'file-loader'
+    test: /\.(eot|woff2?|svg|ttf)([\?]?.*)$/,
+    use: 'file-loader'
   }
 };
 
@@ -155,15 +152,9 @@ module.exports = {
   TsLoader: TsLoader,
   TsLintLoader: TsLintLoader,
   JSONLoader: JSONLoader,
-  // SourceMapLoader: SourceMapLoader,
-  // JavascriptLoader: JavascriptLoader,
-  CssLoader: CssLoader,
-  SassLoader: SassLoader,
-  BootstrapLoader: BootstrapLoader,
+  CssLoaders: CssLoaders,
+  SassLoaders: SassLoaders,
   HtmlLoader: HtmlLoader,
   ImageLoader: ImageLoader,
-  SvgLoader: SvgLoader,
-  WoffLoader: WoffLoader,
-  TtfLoader: TtfLoader,
-  EotLoader: EotLoader,
+  FontLoader: FontLoader
 };

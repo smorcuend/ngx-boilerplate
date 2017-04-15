@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 
 export type InteralStateType = {
   [key: string]: any
@@ -7,9 +7,9 @@ export type InteralStateType = {
 
 @Injectable()
 export class AppState {
-  _state: InteralStateType = {};
 
   public appStateObservable: Subject<any>;
+  _state: InteralStateType = {};
 
   constructor() {
     this.appStateObservable = new Subject();
@@ -26,18 +26,21 @@ export class AppState {
 
 
   get(prop?: any) {
-    // use our state getter for the clone
-    const state = this.state;
-    return state.hasOwnProperty(prop) ? state[prop] : state;
+    return this.state.hasOwnProperty(prop) ? this.state[prop] : null;
+  }
+
+  get$(key: string) {
+    return this.appStateObservable
+      .startWith(this._state[key])
+      .map(() => this._state[key]);
   }
 
   set(prop: string, value: any) {
     // internally mutate our state
     this._state[prop] = value;
-    this.appStateObservable.next(this._state['appData']); // Notify appState change
-    return this._state[prop] = value;
+    this.appStateObservable.next({ key: prop, value: this._state[prop] }); // Notify appState change
+    return this._state[prop];
   }
-
 
   private _clone(object: InteralStateType) {
     // simple object clone

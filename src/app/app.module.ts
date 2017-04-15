@@ -6,19 +6,17 @@ import { HttpModule, Http, BrowserXhr, XHRBackend, RequestOptions } from '@angul
 import { RouterModule, Router } from '@angular/router';
 import { removeNgStyles, createNewHosts, createInputTransfer } from '@angularclass/hmr';
 
-import { CovalentCoreModule } from '@covalent/core';
-
 /*
  * Platform and Environment providers/pipes
  */
 import { ENV_PROVIDERS } from './environment';
 import { ROUTES } from './app.routes';
 // App is our top level component
-import { App } from './app.component';
+import { AppComponent } from './app.component';
 import { APP_RESOLVER_PROVIDERS } from './app.resolver';
 import { AppState, InteralStateType } from './app.service';
 // Vendors
-import { VENDOR_DECLARATIONS, VENDOR_MODULES } from './app.vendors';
+import { VENDOR_DECLARATIONS, VENDOR_MODULES, VENDOR_PROVIDERS } from './app.vendors';
 
 // Services
 import { API_PROVIDERS } from './services/api';
@@ -30,10 +28,9 @@ import { CustomBrowserXhr } from './services/network/custom-browser-xhr';
 import { PIPE_DECLARATIONS } from './pipes';
 
 // Layouts
-import { LAYOUT_DECLARATIONS } from './layouts';
-
+import { LAYOUT_MODULES, LAYOUT_COMPONENTS } from './layouts';
 // Components
-import { COMPONENT_DECLARATIONS } from './components';
+import { COMPONENTS_ELEMENTS, COMPONENTS_MODULES } from './components';
 
 // Application wide providers
 const APP_PROVIDERS = [
@@ -50,40 +47,45 @@ type StoreType = {
 };
 
 /**
- * `AppModule` is the main entry point into Angular2's bootstraping process
+ * `AppModule` is the main entry point into Angular's bootstraping process
  */
 @NgModule({
-  bootstrap: [App],
+  bootstrap: [AppComponent],
   declarations: [
-    App,
+    AppComponent,
     // Vendors
-    ...VENDOR_DECLARATIONS,
+    VENDOR_DECLARATIONS,
     // Pipes
-    ...PIPE_DECLARATIONS,
-    ...LAYOUT_DECLARATIONS,
-    ...COMPONENT_DECLARATIONS
+    PIPE_DECLARATIONS,
+    LAYOUT_COMPONENTS,
+    COMPONENTS_ELEMENTS
   ],
   imports: [ // import Angular's modules
-    BrowserModule,
-    BrowserAnimationsModule,
-    CovalentCoreModule,
-    FormsModule,
     HttpModule,
-    ROUTES,
+    BrowserModule,
+    FormsModule,
+    BrowserAnimationsModule,
+
+    LAYOUT_MODULES,
+    COMPONENTS_MODULES,
+    VENDOR_MODULES,
+
+    ROUTES
   ],
   providers: [ // expose our Services and Providers into Angular's dependency injection
     ENV_PROVIDERS,
     APP_PROVIDERS,
-    {
-      provide: BrowserXhr,
-      useClass: CustomBrowserXhr
-    },
-    {
-      provide: Http,
-      useFactory: (xhrBackend: XHRBackend, requestOptions: RequestOptions, router: Router) =>
-        new HttpInterceptor(xhrBackend, requestOptions, router),
-      deps: [XHRBackend, RequestOptions, Router]
-    }
+    VENDOR_PROVIDERS,
+    // {
+    //   provide: BrowserXhr,
+    //   useClass: CustomBrowserXhr
+    // },
+    // {
+    //   provide: Http,
+    //   useFactory: (xhrBackend: XHRBackend, requestOptions: RequestOptions, router: Router) =>
+    //     new HttpInterceptor(xhrBackend, requestOptions, router),
+    //   deps: [XHRBackend, RequestOptions, Router]
+    // }
   ]
 })
 export class AppModule {

@@ -24,7 +24,12 @@ module.exports = {
       rel: "stylesheet",
       type: "text/css",
       href: "assets/styles/base.css"
-    }
+    },
+    // Not neccessary. It's loaded by main.scss
+    // { rel: 'stylesheet',
+    //   type: "text/css",
+    //   href: 'https://fonts.googleapis.com/icon?family=Material+Icons'
+    // }
   ],
   meta: [
     { name: 'msapplication-TileColor', content: '#00bcd4' },

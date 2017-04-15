@@ -19,7 +19,7 @@ const plugins = require('./webpack.plugins');
 const HMR = helpers.hasProcessFlag('hot');
 const AOT = helpers.hasNpmFlag('aot');
 const METADATA = {
-  title: 'Angular2 Boilerplate by Seedtag',
+  title: 'Angular Boilerplate',
   baseUrl: '/',
   isDevServer: helpers.isWebpackDevServer()
 };
@@ -69,7 +69,9 @@ module.exports = function(options) {
       ],
 
       alias: {
-        jQuery: 'jquery/dist/jquery'
+        $: "jquery",
+        jQuery: "jquery",
+        "Hammer": "hammerjs/hammer"
       }
 
     },
@@ -90,48 +92,13 @@ module.exports = function(options) {
        * See: http://webpack.github.io/docs/configuration.html#module-loaders
        */
       rules: [
-
-        // loaders.SourceMapLoader(),
-
         loaders.TsLintLoader(),
         loaders.TsLoader(isProd),
-
-        //loaders.CssLoader(),
-        // loaders.SassLoader(),
-        {
-          test: /\.css$/,
-          exclude: helpers.root('src', 'app'),
-          loaders: plugins.ExtractTextPlugin.extract({ fallbackLoader: 'style-loader', loader: 'css-loader?sourceMap' })
-        },
-        {
-          test: /\.scss$/,
-          exclude: helpers.root('src', 'app'),
-          loaders: [
-            'style-loader',
-            'css-loader',
-            'sass-loader'
-          ]
-        },
-
-        {
-          test: /\.scss$/,
-          include: helpers.root('src', 'app'),
-          loaders: ['css-to-string-loader','css-loader?sourceMap','sass-loader']
-        },
-        {
-          test: /\.css$/,
-          include: helpers.root('src', 'app'),
-          loaders: ['css-to-string-loader','css-loader']
-        },
-
-        // loaders.BootstrapLoader(),
+        ...loaders.CssLoaders(),
+        ...loaders.SassLoaders(),
         loaders.HtmlLoader(),
         loaders.ImageLoader(),
-        loaders.SvgLoader(),
-        loaders.WoffLoader(),
-        loaders.TtfLoader(),
-        loaders.EotLoader()
-
+        loaders.FontLoader()
       ],
 
     },
@@ -174,7 +141,7 @@ module.exports = function(options) {
       plugins.ProvidePluginInstance,
       plugins.ContextReplacementPluginInstance,
 
-            // Fix Angular 2
+            // Fix Angular
       new plugins.NormalModuleReplacementPlugin(
         /facade(\\|\/)async/,
         helpers.root('node_modules/@angular/core/src/facade/async.js')
