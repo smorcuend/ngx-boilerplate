@@ -1,6 +1,6 @@
 {
-  "name": "angular-boilerplate",
-  "version": "0.0.0",
+  "name": "angular4-boilerplate",
+  "version": "0.1.0",
   "description": "Angular Boilerplate",
   "keywords": [
     "angular",
@@ -79,7 +79,7 @@
     "@covalent/highlight": "^1.0.0-beta.3-1",
     "@covalent/http": "^1.0.0-beta.3-2",
     "@covalent/markdown": "^1.0.0-beta.3-1",
-    "@swimlane/ngx-charts": "5.0.0",
+    "@swimlane/ngx-charts": "^5.0.0",
     "core-js": "^2.4.1",
     "d3": "^4.8.0",
     "hammerjs": "^2.0.8",
@@ -141,7 +141,7 @@
     "typedoc": "0.5.10",
     "typescript": "2.2.2",
     "url-loader": "^0.5.7",
-    "webpack": "2.3.3",
+    "webpack": "2.4.1",
     "webpack-dev-middleware": "1.10.1",
     "webpack-dev-server": "2.4.2",
     "webpack-dll-bundles-plugin": "^1.0.0-beta.5",
