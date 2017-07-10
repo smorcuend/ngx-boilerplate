@@ -42,10 +42,10 @@ export class Api {
 
   public getBaseUrl(): string {
     return this.baseUrl;
-  };
+  }
   public setBaseUrl(url: string) {
     this.baseUrl = `${url}/${this.entity}`;
-  };
+  }
 
   /* REST Interface */
   public create(body): Observable<Response> {
@@ -132,11 +132,11 @@ export class Api {
 
   private getDefaultHeaders(): Headers {
     return this.headers;
-  };
+  }
   private setDefaultHeaders() {
     this.headers = new Headers();
     this.headers.append('Content-Type', 'application/json');
     this.headers.append('Accept', 'application/json');
-  };
+  }
 
 }

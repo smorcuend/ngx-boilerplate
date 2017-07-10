@@ -3,7 +3,7 @@ import 'hammerjs';
 import { NgModule, Type, Component } from '@angular/core';
 
 import { MaterialModule } from '@angular/material';
-import { CovalentCoreModule } from '@covalent/core';
+import { CovalentCoreModule, CovalentLayoutModule } from '@covalent/core';
 import { CovalentHttpModule, IHttpInterceptor } from '@covalent/http';
 
 import { NgxChartsModule } from '@swimlane/ngx-charts';
@@ -21,6 +21,7 @@ export const VENDOR_DECLARATIONS: Component[] = [
 export const VENDOR_MODULES: NgModule[] = [
     MaterialModule,
     CovalentCoreModule,
+    CovalentLayoutModule,
     CovalentHttpModule.forRoot({
       interceptors: [{
         interceptor: RequestInterceptor, paths: ['**'],
