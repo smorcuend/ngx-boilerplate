@@ -3,11 +3,27 @@ import 'hammerjs';
 import { NgModule, Type, Component } from '@angular/core';
 
 import { MaterialModule } from '@angular/material';
-import { CovalentCoreModule, CovalentLayoutModule } from '@covalent/core';
+import {
+  CovalentStepsModule,
+  CovalentLoadingModule,
+  CovalentLayoutModule,
+  TdLoadingService
+} from '@covalent/core';
+import { TdLoadingFactory } from '@covalent/core/loading/services/loading.factory';
+
 import { CovalentHttpModule, IHttpInterceptor } from '@covalent/http';
 
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { RequestInterceptor } from '../config/interceptors/request.interceptor';
+
+export const MATERIAL_IMPORTS = [
+  CovalentLoadingModule
+];
+
+export const MATERIAL_PROVIDERS = [
+  TdLoadingService,
+  TdLoadingFactory
+];
 
 const httpInterceptorProviders: Type<any>[] = [
   RequestInterceptor,
@@ -20,7 +36,7 @@ export const VENDOR_DECLARATIONS: Component[] = [
 
 export const VENDOR_MODULES: NgModule[] = [
     MaterialModule,
-    CovalentCoreModule,
+    CovalentStepsModule,
     CovalentLayoutModule,
     CovalentHttpModule.forRoot({
       interceptors: [{

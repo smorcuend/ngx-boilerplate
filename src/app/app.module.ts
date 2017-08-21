@@ -16,7 +16,13 @@ import { AppComponent } from './app.component';
 import { APP_RESOLVER_PROVIDERS } from './app.resolver';
 import { AppState, InteralStateType } from './app.service';
 // Vendors
-import { VENDOR_DECLARATIONS, VENDOR_MODULES, VENDOR_PROVIDERS } from './app.vendors';
+import {
+  VENDOR_DECLARATIONS,
+  VENDOR_MODULES,
+  VENDOR_PROVIDERS,
+  MATERIAL_IMPORTS,
+  MATERIAL_PROVIDERS
+} from './app.vendors';
 
 // Services
 import { API_PROVIDERS } from './services/api';
@@ -58,7 +64,7 @@ type StoreType = {
     // Pipes
     PIPE_DECLARATIONS,
     LAYOUT_COMPONENTS,
-    COMPONENTS_ELEMENTS
+    COMPONENTS_ELEMENTS,
   ],
   imports: [ // import Angular's modules
     HttpModule,
@@ -69,6 +75,7 @@ type StoreType = {
     LAYOUT_MODULES,
     COMPONENTS_MODULES,
     VENDOR_MODULES,
+    MATERIAL_IMPORTS,
 
     ROUTES
   ],
@@ -76,16 +83,7 @@ type StoreType = {
     ENV_PROVIDERS,
     APP_PROVIDERS,
     VENDOR_PROVIDERS,
-    // {
-    //   provide: BrowserXhr,
-    //   useClass: CustomBrowserXhr
-    // },
-    // {
-    //   provide: Http,
-    //   useFactory: (xhrBackend: XHRBackend, requestOptions: RequestOptions, router: Router) =>
-    //     new HttpInterceptor(xhrBackend, requestOptions, router),
-    //   deps: [XHRBackend, RequestOptions, Router]
-    // }
+    MATERIAL_PROVIDERS
   ]
 })
 export class AppModule {

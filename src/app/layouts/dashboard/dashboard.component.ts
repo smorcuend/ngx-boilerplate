@@ -1,6 +1,6 @@
 import { Component, AfterViewInit } from '@angular/core';
 
-import { Title }     from '@angular/platform-browser';
+import { Title } from '@angular/platform-browser';
 
 import { TdLoadingService, TdDigitsPipe } from '@covalent/core';
 
@@ -12,7 +12,7 @@ import { multi } from './data';
   selector: 'qs-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
-  viewProviders: [ ItemsService, UsersService, ProductsService, AlertsService ],
+  viewProviders: [ItemsService, UsersService, ProductsService, AlertsService],
 })
 export class DashboardComponent implements AfterViewInit {
 
@@ -45,23 +45,23 @@ export class DashboardComponent implements AfterViewInit {
   autoScale: boolean = true;
 
   constructor(private _titleService: Title,
-              private _itemsService: ItemsService,
-              private _usersService: UsersService,
-              private _alertsService: AlertsService,
-              private _productsService: ProductsService,
-              private _loadingService: TdLoadingService) {
-                // Chart
-                this.multi = multi.map((group: any) => {
-                  group.series = group.series.map((dataItem: any) => {
-                    dataItem.name = new Date(dataItem.name);
-                    return dataItem;
-                  });
-                  return group;
-                });
+    private _itemsService: ItemsService,
+    private _usersService: UsersService,
+    private _alertsService: AlertsService,
+    private _productsService: ProductsService,
+    private _loadingService: TdLoadingService) {
+    // Chart
+    this.multi = multi.map((group: any) => {
+      group.series = group.series.map((dataItem: any) => {
+        dataItem.name = new Date(dataItem.name);
+        return dataItem;
+      });
+      return group;
+    });
   }
 
   ngAfterViewInit(): void {
-    this._titleService.setTitle( 'Covalent Quickstart' );
+    this._titleService.setTitle('Covalent Quickstart');
     this._loadingService.register('items.load');
     this._itemsService.query().subscribe((items: Object[]) => {
       this.items = items;

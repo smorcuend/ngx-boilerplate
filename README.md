@@ -1,11 +1,11 @@
 # Angular Boilerplate
 
-Inspired and based on [Angular2-webpack-starter](https://github.com/AngularClass/angular2-webpack-starter) project.
+Inspired and based on [@angularclass/angular-starter](https://github.com/AngularClass/angular-starter) project.
 Teradata [Covalent]( https://teradata.github.io/covalent/) UI Platform built on Angular-Material intergated.
 
 ## Keywords
 * angular ^4.x
-* webpack ^2.x
+* webpack ^3.x
 * typescript ^2.x
 * covalent
 
