@@ -1,6 +1,6 @@
 {
-  "name": "angular4-boilerplate",
-  "version": "0.1.0",
+  "name": "ngx-boilerplate",
+  "version": "0.2.0",
   "description": "Angular Boilerplate",
   "keywords": [
     "angular",
@@ -9,7 +9,7 @@
     "bootstrap"
   ],
   "author": "Sergio Morcuende <smorcuend@gmail.com>",
-  "homepage": "https://github.com/smorcuend/angular-boilerplate",
+  "homepage": "https://github.com/smorcuend/ngx-boilerplate",
   "license": "MIT",
   "scripts": {
     "build:dev": "webpack --config config/webpack.dev.js --progress --profile",
@@ -153,10 +153,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "github.com/smorcuend/angular-boilerplate.git"
+    "url": "github.com/smorcuend/ngx-boilerplate.git"
   },
   "bugs": {
-    "url": "github.com/smorcuend/angular-boilerplate/issues"
+    "url": "github.com/smorcuend/ngx-boilerplate/issues"
   },
   "engines": {
     "node": "^6.9.0",
